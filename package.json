@@ -1,6 +1,6 @@
 {
   "name": "react-native-tv-navigation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native TV TouchableOpacity wrapper with native forced directional focus.",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -43,7 +43,7 @@
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-native": ">=0.72.0 || >=0.72.0-0"
+    "react-native": ">=0.72.0 || 0.83.0-0"
   },
   "devDependencies": {
     "@react-native/typescript-config": "^0.76.0",
