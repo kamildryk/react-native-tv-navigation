@@ -1,6 +1,8 @@
 # react-native-tv-navigation
 
-`react-native-tv-navigation` exports `TVTouchable`, a small `TouchableOpacity` wrapper for React Native TV apps. It keeps the standard `TouchableOpacity` behavior and adds directional forced focus props:
+`react-native-tv-navigation` exports `TVTouchable`, a small `TouchableOpacity` wrapper for React Native TV apps. It also exports `requestTVFocus`, a helper for imperatively moving focus to any mounted target ref.
+
+`TVTouchable` keeps the standard `TouchableOpacity` behavior and adds directional forced focus props:
 
 - `forceFocusUp`
 - `forceFocusDown`
@@ -29,7 +31,7 @@ This package is a normal native React Native library and supports React Native a
 ```tsx
 import React, { useRef } from 'react';
 import { Text, View } from 'react-native';
-import { TVTouchable } from 'react-native-tv-navigation';
+import { TVTouchable, requestTVFocus } from 'react-native-tv-navigation';
 
 export function Example() {
   const buttonARef = useRef(null);
@@ -42,6 +44,7 @@ export function Example() {
         forceFocusUp={buttonBRef}
         onPress={() => {
           console.log('Button A pressed');
+          requestTVFocus(buttonBRef);
         }}
       >
         <Text>Button A</Text>
@@ -67,6 +70,42 @@ type TVTouchableProps = TouchableOpacityProps & {
 ```
 
 `TVTouchable` forwards its ref to the underlying `TouchableOpacity` and accepts all standard `TouchableOpacity` props. External `onFocus`, `onBlur`, `onPress`, and other handlers keep working normally.
+
+```ts
+function requestTVFocus(target: React.RefObject<any> | any | null | undefined): boolean;
+```
+
+`requestTVFocus` lets you move focus from any action, not only directional remote input. It accepts a ref or a mounted native target, resolves it with `findNodeHandle`, and calls the same native `TVForceFocus.requestFocus(targetTag)` method used by `TVTouchable`.
+
+It returns `true` when a native focus request was sent and `false` when the target was empty, unmounted, or could not be resolved.
+
+```tsx
+import React, { useRef } from 'react';
+import { Text, View } from 'react-native';
+import { TVTouchable, requestTVFocus } from 'react-native-tv-navigation';
+
+export function ManualFocusExample() {
+  const submitRef = useRef(null);
+  const cancelRef = useRef(null);
+
+  async function handleSubmit() {
+    await saveChanges();
+    requestTVFocus(cancelRef);
+  }
+
+  return (
+    <View>
+      <TVTouchable ref={submitRef} onPress={handleSubmit}>
+        <Text>Save</Text>
+      </TVTouchable>
+
+      <TVTouchable ref={cancelRef}>
+        <Text>Cancel</Text>
+      </TVTouchable>
+    </View>
+  );
+}
+```
 
 ```
 

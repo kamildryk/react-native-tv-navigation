@@ -1,14 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import * as ReactNative from 'react-native';
 import {
-  findNodeHandle,
   TouchableOpacity,
   type TouchableOpacityProps,
 } from 'react-native';
 
-import TVForceFocus from './NativeTVForceFocus';
-
-export type TVFocusTargetRef = React.RefObject<any>;
+import requestTVFocus, { type TVFocusTargetRef } from './requestTVFocus';
 
 export type TVTouchableProps = TouchableOpacityProps & {
   forceFocusUp?: TVFocusTargetRef | null;
@@ -74,23 +71,6 @@ function getRemoteDirection(event: TVRemoteEvent) {
   }
 
   return eventType;
-}
-
-function focusRef(targetRef?: TVFocusTargetRef | null) {
-  const target = targetRef?.current;
-
-  if (!target) {
-    return false;
-  }
-
-  const targetTag = findNodeHandle(target);
-
-  if (targetTag == null) {
-    return false;
-  }
-
-  TVForceFocus.requestFocus(targetTag);
-  return true;
 }
 
 const TVTouchable = React.forwardRef<TouchableOpacityRef, TVTouchableProps>(
@@ -188,7 +168,7 @@ const TVTouchable = React.forwardRef<TouchableOpacityRef, TVTouchableProps>(
             forceFocusRight,
           };
 
-          if (focusRef(targetRefs[directionToProp[eventDirection]])) {
+          if (requestTVFocus(targetRefs[directionToProp[eventDirection]])) {
             lastForcedAtRef.current = now;
           }
         },
