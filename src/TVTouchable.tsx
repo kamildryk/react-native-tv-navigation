@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
+import * as ReactNative from 'react-native';
 import {
   findNodeHandle,
   TouchableOpacity,
   type TouchableOpacityProps,
-  useTVEventHandler,
 } from 'react-native';
 
 import TVForceFocus from './NativeTVForceFocus';
@@ -23,6 +23,9 @@ type TVRemoteEvent = {
   eventType?: string;
   eventKeyAction?: number | string;
 };
+type ReactNativeWithTVEventHandler = typeof ReactNative & {
+  useTVEventHandler?: (handler: (event: TVRemoteEvent) => void) => void;
+};
 type ForceFocusPropName =
   | 'forceFocusUp'
   | 'forceFocusDown'
@@ -40,6 +43,9 @@ const TV_KEY_DOWN = 0;
 const TV_KEY_UP = 1;
 const FOCUS_EVENT_GUARD_MS = 140;
 const DUPLICATE_FORCE_GUARD_MS = 140;
+const useTVEventHandlerCompat = (
+  ReactNative as ReactNativeWithTVEventHandler
+).useTVEventHandler;
 
 function getEventKeyAction(event: TVRemoteEvent) {
   if (typeof event.eventKeyAction === 'number') {
@@ -139,9 +145,9 @@ const TVTouchable = React.forwardRef<TouchableOpacityRef, TVTouchableProps>(
         [onBlur]
       );
 
-    useTVEventHandler(
+    useTVEventHandlerCompat?.(
       useCallback(
-        (event) => {
+        (event: TVRemoteEvent) => {
           if (!isFocusedRef.current) {
             return;
           }
