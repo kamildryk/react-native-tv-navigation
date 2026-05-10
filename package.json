@@ -1,0 +1,64 @@
+{
+  "name": "react-native-tv-navigation",
+  "version": "0.1.0",
+  "description": "React Native TV TouchableOpacity wrapper with native forced directional focus.",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/src/index.d.ts",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "lib",
+    "ios",
+    "android",
+    "react-native.config.js",
+    "react-native-tv-navigation.podspec",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bob build",
+    "prepare": "bob build",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-tvos",
+    "tvos",
+    "android-tv",
+    "focus",
+    "navigation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamildryk/react-native-tv-navigation.git"
+  },
+  "homepage": "https://github.com/kamildryk/react-native-tv-navigation#readme",
+  "bugs": {
+    "url": "https://github.com/kamildryk/react-native-tv-navigation/issues"
+  },
+  "author": "kamildryk",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.72.0 || >=0.72.0-0"
+  },
+  "devDependencies": {
+    "@react-native/typescript-config": "^0.76.0",
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0",
+    "react-native": "^0.76.0",
+    "react-native-builder-bob": "^0.30.0",
+    "typescript": "^5.0.0"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  }
+}
